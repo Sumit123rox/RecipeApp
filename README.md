@@ -1,21 +1,64 @@
-This is a Kotlin Multiplatform project targeting Android, iOS, Web, Desktop.
+# 🍽️ RecipeApp
+A cross-platform recipe application built using **Jetpack Compose Multiplatform**, allowing users to browse, search, and save their favorite recipes. Users can view recipe details, add them to favorites, and log in/out seamlessly across platforms.
 
-* `/composeApp` is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - `commonMain` is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    `iosMain` would be the right folder for such calls.
+---
 
-* `/iosApp` contains iOS applications. Even if you’re sharing your UI with Compose Multiplatform, 
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+## 🔧 Features
 
+- ✅ Three main tabs:
+  - **Home**: Browse and search recipes.
+  - **Favorites**: View saved favorite recipes (requires login).
+  - **Profile**: Login/Logout functionality.
+- 🔍 Search recipes from the Home screen.
+- 📝 Click on any recipe to see full details.
+- ❤️ Save recipes to Favorites (persisted via local database).
+- 🔐 Authentication flow:
+  - If user is not logged in, a **Login BottomSheet** appears when trying to save a favorite.
+- 🌐 Uses [TheMealDB API](https://www.themealdb.com/api.php) for fetching recipe data.
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html),
-[Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform/#compose-multiplatform),
-[Kotlin/Wasm](https://kotl.in/wasm/)…
+---
 
-We would appreciate your feedback on Compose/Web and Kotlin/Wasm in the public Slack channel [#compose-web](https://slack-chats.kotlinlang.org/c/compose-web).
-If you face any issues, please report them on [YouTrack](https://youtrack.jetbrains.com/newIssue?project=CMP).
+## 🛠️ Tech Stack
 
-You can open the web application by running the `:composeApp:wasmJsBrowserDevelopmentRun` Gradle task.# RecipeApp
+- **UI Framework**: Jetpack Compose Multiplatform
+- **Data Layer**:
+  - [SQLDelight](https://cashapp.github.io/sqldelight/) for local database persistence
+- **Networking**: Ktor or simple HTTP client depending on platform
+- **Dependency Injection**: Koin
+- **Settings & Preferences**: Multiplatform Settings
+- **Routing/Navigating**: Custom navigation without `WASMJS`, using `Js` as target
+- **Authentication**: Simple login/logout logic with session handling
+
+---
+
+## 📱 UI Overview
+
+### Tabs
+- **HomeAscreen**
+  - List of recipes fetched from TheMealDB API
+  - Search bar to filter recipes by name
+- **FavoritesScreen**
+  - List of saved favorite recipes
+  - Requires login to access
+- **ProfileScreen**
+  - Shows login status
+  - Option to log in or out
+
+### Navigation Flow
+1. From Home tab, click a recipe to navigate to Details Screen.
+2. In Details Screen, tap "Add to Favorites":
+   - If user is logged in → Recipe is saved.
+   - If user is NOT logged in → A bottom sheet prompts for login.
+
+---
+
+## 🌐 API Used
+
+This app uses [TheMealDB API](https://www.themealdb.com/api.php) to fetch recipe data.
+
+- Base URL: `https://www.themealdb.com/api/json/v1/1/`
+- Endpoints used:
+  - `search.php?s=` – For searching recipes
+  - `lookup.php?i=` – For getting details of a specific recipe
+
+---
